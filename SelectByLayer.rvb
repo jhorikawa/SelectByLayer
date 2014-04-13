@@ -1,0 +1,33 @@
+Option Explicit
+'Script written by <Junichiro Horikawa>
+'Script copyrighted by <Junichiro Horikawa>
+'Script version Wednesday, 17 November 2010 10:06:22
+
+Call Main()
+Sub Main()
+	Dim arrLayers, arrValues(), arrResults, arrObjects, strObject, arrCheckedLayers(), boolResult, intCount, strCheckedLayer, intFalseCount
+
+
+	
+	arrLayers = Rhino.GetLayers("layer you want to select from")
+	
+	If Not isArray(arrLayers) Then
+		Exit Sub
+	End If
+	
+	arrObjects = Rhino.GetObjects("Select objects then press return",,False,True,True)
+	
+	Rhino.EnableRedraw(False)
+	
+	Rhino.UnselectAllObjects
+	If isArray(arrObjects) Then
+		For Each strObject In arrObjects
+			For Each strCheckedLayer In arrLayers
+				If Rhino.ObjectLayer(strObject) = strCheckedLayer Then
+					Rhino.SelectObject(strObject)
+				End If
+			Next
+		Next
+	End If
+	Rhino.EnableRedraw(True)
+End Sub
